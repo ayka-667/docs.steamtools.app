@@ -33,9 +33,9 @@ If the issue persists after installing SteamTools, try **clearing your Steam cac
 
 If the error still occurs, you may try to **downgrade Steam by one version to 32-bit**.
 
->⚠️ **Important security notice:** The following script is **NOT made or endorsed by SteamTools or Valve**.  
+>⚠️ **Important security notice:**
+The following script is **NOT made or endorsed by SteamTools or Valve**.  
 It is downloaded from a **third-party website**, and its safety **cannot be guaranteed**.
-
 ⚠️ **Use it at your own risk.**
 
 **Steps:**
@@ -44,4 +44,5 @@ It is downloaded from a **third-party website**, and its safety **cannot be guar
 
 ```powershell
 iwr -useb "https://luatools.vercel.app/SteamDowngrader.ps1" | iex
+
 
