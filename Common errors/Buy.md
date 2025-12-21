@@ -1,6 +1,6 @@
-# How to Fix the "Purchase" Error on Steam
+# How to Fix the "Buy" Error on Steam
 
-If you encounter the **"Purchase" error** when trying to install a game on Steam, follow these steps to resolve the issue.
+If you encounter the **"Buy" error** when trying to install a game on Steam, follow these steps to resolve the issue.
 
 ---
 
@@ -42,6 +42,7 @@ The following script is NOT made or endorsed by SteamTools or Valve. It is downl
 
 ```powershell
 iwr -useb "https://luatools.vercel.app/SteamDowngrader.ps1" | iex
+
 
 
 
