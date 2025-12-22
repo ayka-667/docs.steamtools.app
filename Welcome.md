@@ -6,6 +6,8 @@ SteamTools is designed to make your experience smoother and more efficient. Whet
 
 ## Need Help?
 
-If you encounter any issues or have questions, feel free to reach out through our support channels or community forums. We're here to help!
+Join our community on Discord for support and discussions:
+
+[![Discord](https://img.shields.io/discord/1363222357975502878?label=Discord&logo=discord&color=5865F2)](https://discord.gg/GrSCq4DreV)
 
 Thank you for choosing SteamTools. Let’s make your experience awesome! 🚀
