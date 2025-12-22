@@ -2,6 +2,8 @@
 
 If you get the **"Steam.exe not found"** error when using SteamTools, it usually means that Steam’s installation path is not correctly set. Follow the steps below to fix it.
 
+![SteamNotFound](../_images/steamnotfound0.png)
+
 ---
 
 ## 1. Locate Steam on Your PC 🔍
