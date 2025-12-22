@@ -52,7 +52,7 @@ Now you need to tell **SteamTools** where Steam is installed.
 2. Open the folder named **SteamTools**.
 3. Open the file **steamlocation.txt**.
 
-![Open steamlocation.txt](../_images/steamnotfound.png)
+![Open steamlocation.txt](../_images/steamnotfound4.png)
 
 ---
 
@@ -65,7 +65,7 @@ Finally, paste the Steam path into the correct line.
 2. Save the file.
 3. Close the text editor.
 
-![Paste Path](../_images/steamnotfound.png)
+![Paste Path](../_images/steamnotfound5.png)
 
 ---
 
