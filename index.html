@@ -546,6 +546,8 @@
         const sidebar = document.querySelector('.sidebar');
         const overlay = document.querySelector('.overlay');
         let allMenuItems = [];
+        let availableFiles = [];
+        let routeToFile = new Map();
 
         function toggleMenu() {
             sidebar.classList.toggle('open');
@@ -625,6 +627,75 @@
             return structure;
         }
 
+        function toRoutePart(name) {
+            const raw = name
+                .replace(/\.md$/i, '')
+                .replace(/[_-]+/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+
+            return raw
+                .split(' ')
+                .filter(Boolean)
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join('');
+        }
+
+        function normalizeFilePath(file) {
+            return file.replace(/\\/g, '/').replace(/^\/+/, '');
+        }
+
+        function createDocPath(file) {
+            const normalized = normalizeFilePath(file);
+            const parts = normalized.split('/').map(toRoutePart).filter(Boolean);
+            return `/${parts.join('/')}`;
+        }
+
+        function buildRouteMap(files) {
+            routeToFile = new Map();
+            files.forEach(file => {
+                routeToFile.set(createDocPath(file).toLowerCase(), file);
+            });
+        }
+
+        function getFileFromPathname(pathnameOverride = null) {
+            const rawPath = pathnameOverride || window.location.pathname;
+            const pathname = rawPath.replace(/\/+$/, '') || '/';
+            if (pathname === '/' || pathname.toLowerCase() === '/index.html') {
+                return null;
+            }
+
+            return routeToFile.get(pathname.toLowerCase()) || null;
+        }
+
+        function getFileUrl(file) {
+            const normalized = normalizeFilePath(file);
+            const encoded = normalized
+                .split('/')
+                .map(segment => encodeURIComponent(segment))
+                .join('/');
+            return `/${encoded}`;
+        }
+
+        function findMenuItem(file) {
+            return allMenuItems.find(item => item.file === file) || null;
+        }
+
+        function openFileFromPath(pathnameOverride = null) {
+            const file = getFileFromPathname(pathnameOverride);
+            if (!file || !availableFiles.includes(file)) {
+                return false;
+            }
+
+            const item = findMenuItem(file);
+            if (!item) {
+                return false;
+            }
+
+            loadDoc(file, item.link, { updatePath: false });
+            return true;
+        }
+
         function buildMenu(structure) {
             let html = '';
             allMenuItems = [];
@@ -633,7 +704,7 @@
                 html += '<div class="category"><ul>';
                 structure.root.forEach(file => {
                     const title = makeTitle(file);
-                    html += `<li><a href="#" data-file="${file}">${title}</a></li>`;
+                    html += `<li><a href="${createDocPath(file)}" data-file="${file}">${title}</a></li>`;
                 });
                 html += '</ul></div>';
             }
@@ -645,7 +716,7 @@
                 
                 structure.folders[folder].forEach(file => {
                     const title = makeTitle(file);
-                    html += `<li><a href="#" data-file="${file}">${title}</a></li>`;
+                    html += `<li><a href="${createDocPath(file)}" data-file="${file}">${title}</a></li>`;
                 });
                 
                 html += '</ul></div>';
@@ -662,7 +733,13 @@
                 
                 link.onclick = (e) => {
                     e.preventDefault();
-                    loadDoc(link.dataset.file, link);
+                    const nextPath = createDocPath(link.dataset.file);
+                    if (window.location.pathname !== nextPath) {
+                        history.pushState({ file: link.dataset.file }, '', nextPath);
+                        loadDoc(link.dataset.file, link, { updatePath: false });
+                    } else {
+                        loadDoc(link.dataset.file, link, { updatePath: false });
+                    }
                     if (window.innerWidth <= 768) {
                         closeMenu();
                     }
@@ -670,14 +747,15 @@
             });
         }
 
-        async function loadDoc(file, link) {
+        async function loadDoc(file, link, options = {}) {
+            const { updatePath = true } = options;
             const contentInner = document.querySelector('.content-inner');
-            contentInner.innerHTML = '<div class="loading">Chargement...</div>';
+            contentInner.innerHTML = '<div class="loading">Loading...</div>';
             
             try {
-                const response = await fetch(file);
+                const response = await fetch(getFileUrl(file));
                 if (!response.ok) {
-                    throw new Error('Fichier non trouvé');
+                    throw new Error('Fichier non trouvÃ©');
                 }
                 const markdown = await response.text();
                 contentInner.innerHTML = marked.parse(markdown);
@@ -686,6 +764,13 @@
                 
                 document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
                 link.classList.add('active');
+
+                if (updatePath) {
+                    const nextPath = createDocPath(file);
+                    if (window.location.pathname !== nextPath) {
+                        history.pushState({ file }, "", nextPath);
+                    }
+                }
             } catch (error) {
                 contentInner.innerHTML = `
                     <h1>File not found</h1>
@@ -698,7 +783,7 @@
             const contentInner = document.querySelector('.content-inner');
             
             try {
-                const response = await fetch('index.json');
+                const response = await fetch('/index.json');
                 if (!response.ok) {
                     throw new Error('index.json not found');
                 }
@@ -715,12 +800,36 @@
                     return;
                 }
                 
+                availableFiles = files;
+                buildRouteMap(files);
                 const structure = organizeFiles(files);
                 buildMenu(structure);
-                
-                const firstLink = menu.querySelector('a');
-                if (firstLink) {
-                    loadDoc(firstLink.dataset.file, firstLink);
+
+                window.addEventListener('popstate', openFileFromPath);
+
+                const queryPath = new URLSearchParams(window.location.search).get('p');
+                let requestedPath = null;
+                if (queryPath) {
+                    try {
+                        requestedPath = decodeURIComponent(queryPath);
+                    } catch (error) {
+                        requestedPath = null;
+                    }
+                }
+
+                const openedFromRequestedPath = requestedPath ? openFileFromPath(requestedPath) : false;
+                if (openedFromRequestedPath) {
+                    const resolvedFile = getFileFromPathname(requestedPath);
+                    if (resolvedFile) {
+                        history.replaceState({ file: resolvedFile }, '', createDocPath(resolvedFile));
+                    }
+                } else if (!openFileFromPath()) {
+                    const firstLink = menu.querySelector('a');
+                    if (firstLink) {
+                        const firstPath = createDocPath(firstLink.dataset.file);
+                        history.replaceState({ file: firstLink.dataset.file }, "", firstPath);
+                        loadDoc(firstLink.dataset.file, firstLink, { updatePath: false });
+                    }
                 }
             } catch (error) {
                 contentInner.innerHTML = `
@@ -749,9 +858,15 @@ if __name__ == '__main__':
                     </div>
                 `;
             }
-        }
+        }                
 
         init();
     </script>
 </body>
 </html>
+
+
+
+
+
+

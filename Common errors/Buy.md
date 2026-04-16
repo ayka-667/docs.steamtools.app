@@ -4,7 +4,21 @@ If you encounter the **"Buy" error** when trying to install a game on Steam, fol
 
 ---
 
-## 1. Install SteamTools ⚙️
+## 1. Clear the Cache 🧹
+
+If the issue persists after installing SteamTools, try **clearing your Steam cache**.
+
+> ⚠️ **Warning:** Clearing cache will reset some settings, but it won’t delete your installed games.
+
+![Clear Cache](../_images/buy2.png)
+
+---
+
+# If it still doesn’t work, try the following below
+
+---
+
+## 2. Install SteamTools ⚙️
 
 You need to install the Chiness **SteamTools** to fix that.
 
@@ -19,13 +33,7 @@ You need to install the Chiness **SteamTools** to fix that.
 
 ---
 
-## 2. Clear the Cache 🧹
-
-If the issue persists after installing SteamTools, try **clearing your Steam cache**.
-
-> ⚠️ **Warning:** Clearing cache will reset some settings, but it won’t delete your installed games.
-
-![Clear Cache](../_images/buy2.png)
+# If it still doesn’t work, try the following below
 
 ---
 

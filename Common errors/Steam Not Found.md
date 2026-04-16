@@ -50,24 +50,10 @@ Once the Steam folder is open, you must copy its full path.
 Now you need to tell **SteamTools** where Steam is installed.
 
 **Steps:**
-1. Open the **Documents** folder.
-2. Open the folder named **SteamTools**.
-3. Open the file **steamlocation.txt**.
+1. Open the **Settings** option in SteamTools.
+2. Go to **Set Custom Steam Location** and paste your Steam path.
 
 ![Open steamlocation.txt](../_images/steamnotfound4.png)
-
----
-
-## 5. Set the Correct Steam Path ✅
-
-Finally, paste the Steam path into the correct line.
-
-**Steps:**
-1. Paste the copied path on the **4th line** of the file.
-2. Save the file.
-3. Close the text editor.
-
-![Paste Path](../_images/steamnotfound5.png)
 
 ---
 

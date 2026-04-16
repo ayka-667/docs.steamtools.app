@@ -1,9 +1,13 @@
 [
   "Welcome.md",
+  "Common errors/Buy.md",
   "Common errors/Connection Failed.md",
   "Common errors/Game download stuck.md",
   "Common errors/Steam Not Found.md",
-  "Common errors/Buy.md"
-
+  "Extra/achivements.md",
+  "Extra/multiplayer.md",
+  "Extra/st-fixer.md",
+  "Extra/unlock-dlc.md",
+  "Fixes/Denuvo.md",
+  "Fixes/General Fixes.md"
 ]
-
