@@ -5,10 +5,11 @@ If a game does not launch, has save issues, crashes, or has other unexpected pro
 You can find fixes here:
 
 - [Fix WebSite](https://generator.ryuu.lol/fixes)
+- [Hubcap's](https://discord.com/invite/hubcapsmanifest)
 
 ## How To Install A Fix
 
-1. Download the fix `.zip` file for your game.
+1. Download the fix `.zip` file for your game
 2. Open your game's root folder (the folder where the game executable is located).
 3. Extract all files from the `.zip` into the game's root folder.
 4. Accept file replacement if Windows asks.
